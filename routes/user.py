@@ -6,7 +6,7 @@ credentials_dict = {
     "type": "service_account",
     "project_id": "code-vipassana-fd690",
     "private_key_id": "0a6ef67d7fafd46689421f1fcf564e6b81a7eff3",
-    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace('\\n', '\n'),
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY", "").replace('\\n', '\n'),
     "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
     "client_id": os.environ.get('FIREBASE_CLIENT_ID'),
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
