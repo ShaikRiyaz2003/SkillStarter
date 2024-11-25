@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, db
 import os
+import json
 from fastapi import APIRouter, HTTPException
 credentials_dict = {
     "type": "service_account",
@@ -57,73 +58,8 @@ def save_learning_path(learning_path_id, learning_path_data):
     except Exception as e:
         print(f"Error saving learning path: {e}")
 
-# Example JSON data (learning path data)
-learning_path_data = {
-    "learning_path_name": "6-Month Cybersecurity Professional",
-    "learning_path_description": "A comprehensive 6-month plan to acquire professional-level cybersecurity skills with a focus on Machine Learning, Data Science, Networking, and DSA.",
-    "due_date": "2025-05-25",
-    "tasks": [
-        {
-            "task_name": "Cybersecurity Foundations",
-            "task_deadline": "2024-12-25",
-            "duration_period": "1 month",
-            "task_description": "Build a strong foundation in core cybersecurity concepts.",
-            "task_achievables": ["Understand fundamental security principles",
-                                 "Learn about common threats and vulnerabilities"],
-            "subtasks": [
-                {
-                    "subtask_name": "Network Security Basics",
-                    "subtask_deadline": "2024-12-10",
-                    "duration_period": "2 weeks",
-                    "subtask_description": "Learn about network protocols, firewalls, and intrusion detection systems.",
-                    "subtask_achievables": [
-                        {
-                            "reference_name": "Network Security Fundamentals",
-                            "reference_link": "https://www.coursera.org/learn/network-security-fundamentals"
-                        }
-                    ]
-                },
-                {
-                    "subtask_name": "Cryptography Essentials",
-                    "subtask_deadline": "2024-12-25",
-                    "duration_period": "2 weeks",
-                    "subtask_description": "Understand encryption, decryption, and digital signatures.",
-                    "subtask_achievables": [
-                        {
-                            "reference_name": "Cryptography I",
-                            "reference_link": "https://www.coursera.org/learn/cryptography-i"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "task_name": "Machine Learning for Cybersecurity",
-            "task_deadline": "2025-02-25",
-            "duration_period": "2 months",
-            "task_description": "Apply machine learning techniques to cybersecurity challenges.",
-            "task_achievables": ["Understand machine learning models",
-                                 "Learn to apply ML algorithms in cybersecurity scenarios"],
-            "subtasks": [
-                {
-                    "subtask_name": "Introduction to Machine Learning",
-                    "subtask_deadline": "2025-01-10",
-                    "duration_period": "1 month",
-                    "subtask_description": "Learn the basics of machine learning algorithms and their applications.",
-                    "subtask_achievables": [
-                        {
-                            "reference_name": "Machine Learning by Andrew Ng",
-                            "reference_link": "https://www.coursera.org/learn/machine-learning"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}
-
 router = APIRouter()
-@router.post("/create_user/")
+@router.post("/create_user")
 async def api_create_user(userId: str, name: str, email: str):
     try:
         create_user(userId, name, email)
@@ -131,10 +67,10 @@ async def api_create_user(userId: str, name: str, email: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating user: {e}")
 
-@router.post("/save_learning_path/")
+@router.post("/save_learning_path")
 async def api_save_learning_path(learning_path_id: str, learning_path_data):
     try:
-        save_learning_path(learning_path_id, learning_path_data.dict())
+        save_learning_path(learning_path_id, json.loads(learning_path_data))
         return {"message": f"Learning path {learning_path_data.learning_path_name} successfully saved to Firebase!"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving learning path: {e}")
