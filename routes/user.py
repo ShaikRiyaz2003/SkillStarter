@@ -1,22 +1,29 @@
 import firebase_admin
 from firebase_admin import credentials, db
-
-
-# Initialize Firebase Admin SDK
-def initialize_firebase():
-    # Replace with your Firebase service account key file
-    cred = credentials.Certificate("../Credentials.json")
-    firebase_admin.initialize_app(cred, {
-        "databaseURL": "https://code-vipassana-fd690-default-rtdb.asia-southeast1.firebasedatabase.app/"
-        # your Firebase URL
-    })
+import os
+from fastapi import APIRouter, HTTPException
+credentials_dict = {
+    "type": "service_account",
+    "project_id": "code-vipassana-fd690",
+    "private_key_id": "0a6ef67d7fafd46689421f1fcf564e6b81a7eff3",
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace('\\n', '\n'),
+    "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
+    "client_id": os.environ.get('FIREBASE_CLIENT_ID'),
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-72wvc%40code-vipassana-fd690.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}
+cred = credentials.Certificate(credentials_dict)
+firebase_admin.initialize_app(cred, {
+    "databaseURL": os.environ.get("FIREBASE_DATABASE_URL")
+    # your Firebase URL
+})
 
 
 def create_user(userId, name, email):
     try:
-        # Initialize Firebase (if not already done)
-        initialize_firebase()
-
         # Firebase reference for the 'users' node
         user_ref = db.reference(f"/users/{userId}")  # Use the userId as the key
 
@@ -49,15 +56,6 @@ def save_learning_path(learning_path_id, learning_path_data):
         print(f"Learning path {learning_path_data['learning_path_name']} successfully saved to Firebase!")
     except Exception as e:
         print(f"Error saving learning path: {e}")
-
-# Example usage
-if __name__ == "__main__":
-    user_id = "12345"
-    name = "John Doe"
-    email = "john.doe@example.com"
-
-    create_user(user_id, name, email)
-learning_path_id = "cybersecurity_6_month_path"  # Unique ID for this learning path
 
 # Example JSON data (learning path data)
 learning_path_data = {
@@ -124,5 +122,24 @@ learning_path_data = {
     ]
 }
 
-# Save the data to Firebase
-save_learning_path(learning_path_id, learning_path_data)
+router = APIRouter()
+@router.post("/create_user/")
+async def api_create_user(userId: str, name: str, email: str):
+    try:
+        create_user(userId, name, email)
+        return {"message": f"User {name} successfully created in Firebase!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating user: {e}")
+
+@router.post("/save_learning_path/")
+async def api_save_learning_path(learning_path_id: str, learning_path_data):
+    try:
+        save_learning_path(learning_path_id, learning_path_data.dict())
+        return {"message": f"Learning path {learning_path_data.learning_path_name} successfully saved to Firebase!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error saving learning path: {e}")
+
+# Include the router in your FastAPI app
+# from fastapi import FastAPI
+# app = FastAPI()
+# app.include_router(router, prefix="/api")
