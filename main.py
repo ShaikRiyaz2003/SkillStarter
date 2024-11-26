@@ -18,4 +18,4 @@ app.include_router(user_router, tags=["User"])
 app.include_router(learnings_router, tags=["learnings"])
 # Run the application
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
