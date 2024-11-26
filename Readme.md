@@ -27,8 +27,8 @@ This isn’t just another tool — it’s your ultimate growth companion, built 
 
 ![Architecture](./images/Architecture.png)
 
-- FastAPI: Core backend for user requests, path generation, and tracking.
-- Cloud Firestore: NoSQL database for real-time data storage.
+- FastAPI: A high-performance backend for fast user requests, path generation, and tracking.
+- Cloud Firestore: A real-time NoSQL database for instant data synchronization and tracking.
 - Gemini: User-facing platform to access personalized paths.
 
 # Steps to Implement the System
