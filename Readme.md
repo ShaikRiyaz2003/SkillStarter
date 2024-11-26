@@ -166,3 +166,5 @@ A heartfelt thanks to [Praneeth](https://www.linkedin.com/in/praneeth1513/) for 
 
 Discover more game-changing insights💡🎯 and stories — connect with me on [LinkedIn](https://www.linkedin.com/in/shaikriyaz03/), [GitHub](https://github.com/ShaikRiyaz2003), and [Medium](https://medium.com/@shaikriyaz2003)!
 
+
+[MediumBlog](https://medium.com/@shaikriyaz2003/skill-starter-unleashing-potential-with-gemini-ec18001029b9)
