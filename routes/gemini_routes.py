@@ -12,9 +12,9 @@ genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 @router.get("/gemini/generate")
-async def get_gemini_data(technology: str,expertise:str, time_in_months: float, goal: Optional[str] = "", known_technologies: Optional[str] = ""):
+async def get_gemini_data(technology: str,curr_expertise:str, time_in_months: float, goal: Optional[str] = "", known_technologies: Optional[str] = ""):
     prompt = f'''
-    You are an intelligent AI assistant designed to plan a structured week wise plan to learn {technology} for a {expertise} who  has a time period of {time_in_months} months to achieve a  {technology} skills aiming to {goal}. who have the idea in technologies: {known_technologies} Don not use any kind of back ticks/special characters(newline, tab-spaces, escape sequences) and text only return json formatted text below and also add any reference links 
+    You are an intelligent AI assistant designed to plan a structured week wise plan to learn {technology} for a {curr_expertise} who  has a time period of {time_in_months} months to achieve a  {technology} skills aiming to {goal}. who have the idea in technologies: {known_technologies} Don not use any kind of back ticks/special characters(newline, tab-spaces, escape sequences) and text only return json formatted text below and also add any reference links 
     {{
         -+
     learning_path_name: '',
