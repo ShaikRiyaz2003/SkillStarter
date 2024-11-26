@@ -36,7 +36,7 @@ async def create_learning(user_id: str, learning_data: dict):
             **learning_data
         })
         user_ref.update({
-            'learnings': (user_ref.get().to_dict() or {}).get('learnings', []) + [new_learning_id]
+            'learning_paths': (user_ref.get().to_dict() or {}).get('learnings', []) + [new_learning_id]
         })
         return {"message": "Learning path created", "learning_id": new_learning_id}
     else:
