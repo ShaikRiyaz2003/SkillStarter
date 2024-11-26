@@ -8,7 +8,7 @@ from typing import Optional
 
 router = APIRouter()
 load_dotenv()
-genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
+genai.configure(api_key="AIzaSyC1Zz07l6bghONx3g4pxXBa8__fBhano3Q")
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 @router.get("/gemini/generate")
